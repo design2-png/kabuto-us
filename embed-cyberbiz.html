@@ -1,0 +1,346 @@
+<!--
+  Kabuto™ 美國現貨直送｜一頁式銷售頁 v2.1
+  - 所有樣式皆限定在 .kb-us 內，貼進 Cyberbiz 自訂 HTML 區塊不會影響佈景主題
+  - 圖片與影片改由 GitHub 提供：網址前綴為
+    https://cdn.jsdelivr.net/gh/<你的帳號>/<repo 名稱>@main/assets
+    若 repo 名稱不同，整份檔案搜尋 design2-png/kabuto-us 一次取代即可
+  - 連結：搜尋 href="#buy" 替換成商品頁網址
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+.kb-us{
+  --ink:#16171a; --ink-2:#4a4c52; --ink-3:#8a8c91;
+  --paper:#f3f1ed; --line:rgba(22,23,26,.12);
+  --night:#111317; --night-line:rgba(255,255,255,.12);
+  --orange:#F45423; --orange-dk:#d9431a; --orange-soft:rgba(244,84,35,.18);
+  --wrap:1200px; --gut:clamp(20px,5vw,64px);
+  --sec:clamp(64px,8vw,112px);
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  font-family:var(--sans); color:var(--ink); background:var(--paper);
+  line-height:1.7; -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+.kb-us *,.kb-us *::before,.kb-us *::after{box-sizing:border-box;margin:0;padding:0}
+.kb-us img{display:block;max-width:100%}
+.kb-us a{color:inherit;text-decoration:none}
+.kb-wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.kb-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.kb-h2{font-size:clamp(28px,3.8vw,48px);font-weight:700;line-height:1.3;letter-spacing:.02em}
+.kb-lead{font-size:clamp(15px,1.3vw,17px);color:var(--ink-2);max-width:36em}
+
+/* Buttons */
+.kb-btn{display:inline-flex;align-items:center;gap:14px;height:56px;padding:0 28px;border-radius:2px;font-weight:500;font-size:16px;letter-spacing:.08em;transition:background .25s,color .25s,border-color .25s}
+.kb-us .kb-btn--solid{background:var(--ink);color:#fff}
+.kb-us .kb-btn--solid:hover{background:var(--orange)}
+.kb-us .kb-btn--ghost{border:1px solid rgba(22,23,26,.25);color:var(--ink)}
+.kb-us .kb-btn--ghost:hover{border-color:var(--ink)}
+.kb-btn svg{width:18px;height:18px;transition:transform .25s}
+.kb-btn:hover svg{transform:translateX(4px)}
+.kb-us a:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+
+/* 1. HERO (video background) ---------------------------- */
+.kb-hero{position:relative;min-height:min(86vh,800px);display:grid;align-items:center;background:#cdcdcc;overflow:hidden}
+/* 影片／主視覺靠右，左緣以遮罩淡出融入底色 */
+.kb-hero__img,.kb-hero__video{position:absolute;top:0;bottom:0;left:34%;width:66%;height:100%;object-fit:cover;object-position:52% 50%;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%)}
+.kb-hero__video{opacity:0;transition:opacity .9s ease}
+.kb-hero__video.is-playing{opacity:1}
+/* 文案側的保護層，確保影片亮暗變化時文字仍清楚 */
+.kb-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(205,205,204,.92) 0%,rgba(205,205,204,.6) 28%,rgba(205,205,204,.2) 42%,rgba(205,205,204,0) 56%)}
+.kb-hero__inner{position:relative;z-index:1;width:100%;padding:80px 0 148px}
+.kb-hero__copy{max-width:640px}
+.kb-hero h1{font-size:clamp(34px,4.2vw,60px);font-weight:900;line-height:1.28;letter-spacing:.03em;margin:24px 0 20px}
+.kb-hero h1 em,.kb-hero h1 span{display:block;white-space:nowrap}
+.kb-hero h1 em{font-style:normal}
+.kb-hero h1 span{color:var(--orange);font-weight:700}
+.kb-hero__sub{font-size:clamp(16px,1.5vw,20px);letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:12px;margin-bottom:36px}
+.kb-hero__sub i{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 6px var(--orange-soft)}
+.kb-hero__cta{display:flex;flex-wrap:wrap;gap:12px}
+
+/* 首屏底部跑馬燈 */
+.kb-ticker{position:absolute;left:0;right:0;bottom:0;z-index:1;height:72px;display:flex;align-items:center;overflow:hidden;
+  border-top:1px solid var(--line);background:rgba(243,241,237,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.kb-ticker__track{display:flex;width:max-content;animation:kb-marquee 40s linear infinite}
+.kb-ticker__group{display:flex;align-items:center;flex:none}
+.kb-ticker__group span{display:flex;align-items:center;gap:34px;padding-right:34px;white-space:nowrap;
+  font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.kb-ticker__group span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange);flex:none}
+@keyframes kb-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* 2. PAIN (night scene) --------------------------------- */
+.kb-pain-sec{position:relative;background:#000;color:#fff;min-height:min(46vw,720px);display:flex;align-items:center;overflow:hidden}
+.kb-pain-sec__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:78% 50%}
+/* 素材本身已帶左黑漸變，這層只做文字可讀性的補強 */
+.kb-pain-sec::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.72) 26%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.14) 56%,rgba(0,0,0,0) 70%)}
+.kb-pain-sec__inner{position:relative;z-index:1;width:100%;padding-top:var(--sec);padding-bottom:var(--sec)}
+.kb-pain-sec__copy{max-width:min(600px,58%)}
+@media (min-width:961px){.kb-pain-sec .kb-h2,.kb-action .kb-h2{white-space:nowrap;font-size:clamp(26px,3vw,42px)}}
+.kb-pain-sec .kb-eyebrow{color:rgba(255,255,255,.45)}
+.kb-pain-sec .kb-h2{margin-top:20px}
+.kb-pain-sec h3{font-size:clamp(17px,1.5vw,20px);font-weight:500;color:rgba(255,255,255,.6);margin:18px 0 26px;letter-spacing:.04em}
+.kb-pain-sec__intro{font-size:15px;color:rgba(255,255,255,.72);line-height:1.9;margin-bottom:28px;padding-bottom:26px;border-bottom:1px solid var(--night-line)}
+.kb-pains{list-style:none;display:grid;gap:14px}
+.kb-pain{display:grid;grid-template-columns:18px 1fr;gap:12px;font-size:15px;line-height:1.7;color:rgba(255,255,255,.88)}
+.kb-pain::before{content:"";width:6px;height:6px;margin-top:11px;border-radius:50%;background:var(--orange)}
+
+/* 3. ACTION (dark, route) ------------------------------- */
+.kb-action{background:#000;color:#fff;padding:var(--sec) 0}
+.kb-action .kb-eyebrow{color:rgba(255,255,255,.45)}
+.kb-action__grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(40px,5vw,80px);align-items:center}
+.kb-action .kb-h2{margin:20px 0 20px}
+.kb-action .kb-lead{color:rgba(255,255,255,.65)}
+.kb-action .kb-lead p+p{margin-top:8px}
+.kb-action .kb-lead strong{color:#fff;font-weight:700}
+.kb-compare{display:grid;grid-template-columns:1fr 1fr;margin-top:36px;border-top:1px solid var(--night-line)}
+.kb-compare>div{padding-top:20px}
+.kb-compare>div+div{padding-left:28px;border-left:1px solid var(--night-line)}
+.kb-compare small{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.45)}
+.kb-compare b{display:block;font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.3;margin:4px 0 2px}
+.kb-compare .is-old b{color:rgba(255,255,255,.35);text-decoration:line-through;text-decoration-thickness:1px}
+.kb-compare .is-new b{color:var(--orange)}
+.kb-compare p{font-size:14px;color:rgba(255,255,255,.55)}
+.kb-route svg{width:100%;height:auto;display:block;overflow:visible}
+.kb-route__path{fill:none;stroke:rgba(255,255,255,.3);stroke-width:1.5;stroke-dasharray:4 7}
+.kb-route__draw{fill:none;stroke:var(--orange);stroke-width:3;stroke-linecap:round}
+.kb-route__lbl{font-family:var(--mono);font-size:16px;letter-spacing:.12em;fill:rgba(255,255,255,.45)}
+.kb-route__city{font-family:var(--sans);font-size:30px;font-weight:700;fill:#fff}
+
+/* 4. FLOW (light) --------------------------------------- */
+.kb-flow{padding:var(--sec) 0;background:#fff}
+.kb-flow__head{text-align:center;max-width:720px;margin:0 auto}
+.kb-flow__head .kb-h2{margin:20px 0 12px}
+.kb-flow__head .kb-lead{margin:0 auto}
+.kb-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px);margin-top:clamp(40px,5vw,64px);position:relative}
+.kb-steps::before{content:"";position:absolute;top:23px;left:24px;right:24px;height:1px;background:var(--line)}
+.kb-step{position:relative}
+.kb-step__no{position:relative;width:48px;height:48px;border-radius:50%;background:#fff;border:1px solid var(--ink);display:grid;place-items:center;font-family:var(--mono);font-size:14px}
+.kb-step:last-child .kb-step__no{background:var(--orange);border-color:var(--orange);color:#fff}
+.kb-step h3{font-size:clamp(19px,1.8vw,22px);font-weight:700;letter-spacing:.04em;margin:24px 0 10px}
+.kb-step p{font-size:15px;color:var(--ink-2)}
+.kb-step__tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.kb-step__tags span{font-size:13px;padding:3px 12px;border:1px solid var(--line);border-radius:99px;color:var(--ink-2)}
+
+/* 6. SERVICE -------------------------------------------- */
+.kb-care{padding:var(--sec) 0;background:var(--paper)}
+.kb-care__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,96px);align-items:center}
+
+.kb-care__list{list-style:none;border-top:1px solid var(--ink)}
+.kb-care__item{display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}
+.kb-care__item svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.4}
+.kb-care__item h3{font-size:clamp(17px,1.7vw,20px);font-weight:700;letter-spacing:.04em}
+.kb-care__item p{font-size:14px;color:var(--ink-2);margin-top:2px}
+
+/* Reveal (only when JS runs) */
+.kb-js .kb-rv{opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.kb-js .kb-rv.is-in{opacity:1;transform:none}
+.kb-js .kb-route__draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 2.2s cubic-bezier(.6,.1,.2,1) .3s}
+.kb-js .kb-route.is-in .kb-route__draw{stroke-dashoffset:0}
+
+/* Tablet */
+@media (max-width:960px){
+  .kb-pain-sec{display:block;min-height:0}
+  .kb-pain-sec__img{position:relative;height:auto;aspect-ratio:16/10;object-position:78% 50%}
+  .kb-pain-sec::after{background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.7) 75%,#000 100%)}
+  .kb-pain-sec__inner{padding-top:48px}
+  .kb-pain-sec__copy{max-width:none}
+  .kb-action__grid,.kb-care__grid{grid-template-columns:1fr;gap:40px}
+  .kb-steps{grid-template-columns:1fr;gap:0}
+  .kb-steps::before{top:24px;bottom:24px;left:23px;right:auto;width:1px;height:auto}
+  .kb-step{display:grid;grid-template-columns:48px 1fr;column-gap:20px;padding-bottom:36px}
+  .kb-step h3{margin-top:10px}
+  .kb-step:last-child{padding-bottom:0}
+  .kb-step>*:not(.kb-step__no){grid-column:2}
+  .kb-step__no{grid-row:1/span 4}
+}
+/* Mobile */
+@media (max-width:640px){
+  .kb-hero{min-height:0;display:flex;flex-direction:column}
+  .kb-hero::after{display:none}
+  .kb-hero__img{position:relative;left:auto;width:100%;height:auto;aspect-ratio:4/3;object-position:60% 50%;-webkit-mask-image:none;mask-image:none}
+  .kb-hero__video{display:none}
+  .kb-hero::after{display:none}
+  .kb-hero__inner{order:-1;padding-top:48px;padding-bottom:36px}
+  .kb-hero h1 em,.kb-hero h1 span{white-space:normal}
+  .kb-hero__cta .kb-btn{flex:1 1 100%;justify-content:center}
+  .kb-hero__inner{padding-bottom:36px}
+  .kb-ticker{position:relative;left:auto;right:auto;width:100%;height:56px}
+  .kb-ticker__group span{font-size:11px;gap:24px;padding-right:24px}
+  .kb-pain-sec__img{aspect-ratio:4/3;object-position:74% 50%}
+  .kb-compare>div+div{padding-left:18px}
+  .kb-route__lbl{font-size:26px}
+  .kb-route__city{font-size:40px}
+  .kb-route__lbl--mid{display:none}
+  .kb-care__item{grid-template-columns:36px 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .kb-ticker__track{animation:none}
+  .kb-js .kb-rv{opacity:1;transform:none;transition:none}
+  .kb-js .kb-route__draw{stroke-dashoffset:0;transition:none}
+}
+</style>
+
+<div class="kb-us" id="kb-us">
+
+  <!-- 1. HERO -->
+  <section class="kb-hero" aria-labelledby="kb-hero-title">
+    <img class="kb-hero__img" src="https://cdn.jsdelivr.net/gh/design2-png/kabuto-us@main/assets/kabuto-hero.jpg" alt="Kabuto 人體工學椅，黑色網背、可調頭枕與鋁合金椅腳" width="2400" height="1350" fetchpriority="high">
+    <video class="kb-hero__video" data-src="https://cdn.jsdelivr.net/gh/design2-png/kabuto-us@main/assets/kabuto-hero.mp4" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="kb-hero__inner">
+      <div class="kb-wrap">
+        <div class="kb-hero__copy">
+          <p class="kb-eyebrow">Ships from US West</p>
+          <h1 id="kb-hero-title"><em>距離很遠，</em><span>但給你的照顧很近</span></h1>
+          <p class="kb-hero__sub"><i aria-hidden="true"></i>Kabuto™ 美國現貨直送</p>
+          <div class="kb-hero__cta">
+            <a class="kb-btn kb-btn--solid" href="#buy">立即選購
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+            <a class="kb-btn kb-btn--ghost" href="#kb-flow">了解出貨流程</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kb-ticker" aria-hidden="true">
+      <div class="kb-ticker__track">
+        <div class="kb-ticker__group"><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span></div>
+        <div class="kb-ticker__group"><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PAIN -->
+  <section class="kb-pain-sec" aria-labelledby="kb-pain-title">
+    <img class="kb-pain-sec__img" src="https://cdn.jsdelivr.net/gh/design2-png/kabuto-us@main/assets/kabuto-night.jpg" alt="深夜在家工作的男子，坐在 Kabuto 人體工學椅上伸展" width="2000" height="1200" loading="lazy">
+    <div class="kb-pain-sec__inner kb-wrap">
+      <div class="kb-pain-sec__copy kb-rv">
+        <p class="kb-eyebrow">Far From Home</p>
+        <h2 class="kb-h2" id="kb-pain-title">異鄉奮鬥的夜晚，<br>需要真正懂你的支撐</h2>
+        <h3>在異鄉挑一張好椅子，遠比想像中不容易</h3>
+        <p class="kb-pain-sec__intro">作為科技大廠特約夥伴，我們陪伴許多夥伴跨海打拼，<br>卻也發現大家在展開新生活時，總面臨相同的難題。</p>
+        <ul class="kb-pains">
+          <li class="kb-pain">美國大牌偏向歐美骨架，腰靠與坐深難以真正貼合亞洲身型。</li>
+          <li class="kb-pain">從台灣跨海集運家具等待長達 6–8 週，還得面臨破損退換無門的風險。</li>
+          <li class="kb-pain">在美刷卡購買高階家具手續繁瑣，無法使用台灣福利金與分期。</li>
+          <li class="kb-pain">生活成本高額，桌椅科技類產品價格與運費高漲。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. BRAND ACTION -->
+  <section class="kb-action" aria-labelledby="kb-action-title">
+    <div class="kb-wrap kb-action__grid">
+      <div class="kb-rv">
+        <p class="kb-eyebrow">Now in the US</p>
+        <h2 class="kb-h2" id="kb-action-title">告別跨海漫長等待，<br>我們把現貨直接搬進美國</h2>
+        <div class="kb-lead">
+          <p>不必忍受動輒數週的海運，更不必到處拜託代購。</p>
+          <p>Kabuto 正式啟動美國在地倉儲計畫——<strong>現貨全數進駐美西倉</strong>。</p>
+        </div>
+        <div class="kb-compare">
+          <div class="is-old"><small>BEFORE</small><b>數週</b><p>跨海運送、清關等待</p></div>
+          <div class="is-new"><small>NOW</small><b>3–7 天</b><p>美西倉出貨，宅配到府</p></div>
+        </div>
+      </div>
+      <div class="kb-route kb-rv">
+        <svg viewBox="0 0 1000 340" role="img" aria-label="從台灣到美西倉的運送路線示意">
+          <path class="kb-route__path" d="M110 250 C 330 40, 670 40, 890 250"/>
+          <path class="kb-route__draw" d="M110 250 C 330 40, 670 40, 890 250"/>
+          <circle cx="110" cy="250" r="9" fill="#fff"/>
+          <circle cx="890" cy="250" r="22" fill="rgba(244,84,35,.25)"/>
+          <circle cx="890" cy="250" r="9" fill="#F45423"/>
+          <text class="kb-route__city" x="110" y="210" text-anchor="middle">台灣</text>
+          <text class="kb-route__lbl" x="110" y="305" text-anchor="middle">TAIWAN · 下單</text>
+          <text class="kb-route__city" x="890" y="210" text-anchor="middle">美西</text>
+          <text class="kb-route__lbl" x="890" y="305" text-anchor="middle">US WEST · 出貨</text>
+          <text class="kb-route__lbl kb-route__lbl--mid" x="500" y="70" text-anchor="middle">PACIFIC OCEAN</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FLOW -->
+  <section class="kb-flow" id="kb-flow" aria-labelledby="kb-flow-title">
+    <div class="kb-wrap">
+      <div class="kb-flow__head kb-rv">
+        <p class="kb-eyebrow">How It Works</p>
+        <h2 class="kb-h2" id="kb-flow-title">台灣下單，美國出貨</h2>
+        <p class="kb-lead">用最熟悉的服務效率，給予遠方最即時的後盾</p>
+      </div>
+      <ol class="kb-steps">
+        <li class="kb-step kb-rv">
+          <span class="kb-step__no">01</span>
+          <h3>台灣金流輕鬆結帳</h3>
+          <p>家人在台灣就能下單，用最熟悉的方式付款。</p>
+          <div class="kb-step__tags"><span>台幣信用卡</span><span>LINE Pay</span><span>分期付款</span></div>
+        </li>
+        <li class="kb-step kb-rv">
+          <span class="kb-step__no">02</span>
+          <h3>美西倉快速出貨</h3>
+          <p>訂單完成後，系統自動拋單至美國在地倉庫，24 小時內完成打包，並交付 FedEx / UPS 運輸。</p>
+          <div class="kb-step__tags"><span>24H 打包</span><span>FedEx / UPS</span></div>
+        </li>
+        <li class="kb-step kb-rv">
+          <span class="kb-step__no">03</span>
+          <h3>3–7 天免運宅配到府</h3>
+          <p>全程提供包裹追蹤碼，免去海關扣查風險，美國本土（不含偏遠地區）免運宅配到家。</p>
+          <div class="kb-step__tags"><span>包裹追蹤碼</span><span>免運</span><span>無海關扣查</span></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. SERVICE -->
+  <section class="kb-care" aria-labelledby="kb-care-title">
+    <div class="kb-wrap kb-care__grid">
+      <div class="kb-rv">
+        <h2 class="kb-h2" id="kb-care-title">台灣原廠品質<br>美國在地服務</h2>
+      </div>
+      <ul class="kb-care__list">
+        <li class="kb-care__item kb-rv">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l11 5v7c0 7-4.7 12-11 14C9.7 27 5 22 5 15V8z"/><path d="M11 16l3.5 3.5L21 13"/></svg>
+          <div><h3>台灣製造，安心可靠</h3><p>30 年人體工學專業，原廠嚴選用料。</p></div>
+        </li>
+        <li class="kb-care__item kb-rv">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="20" rx="1"/><path d="M5 13h22M11 4v6M21 4v6"/><path d="M12 20l3 3 5-6"/></svg>
+          <div><h3>美國在地 3 年原廠保固</h3><p>保固與維修在美國當地處理，不必寄回台灣。</p></div>
+        </li>
+        <li class="kb-care__item kb-rv">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 7h22v15H14l-6 5v-5H5z"/><path d="M11 13h10M11 17h6"/></svg>
+          <div><h3>繁體中文線上客服</h3><p>用母語溝通，問題說得清楚、處理得快。</p></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('kb-us'); if(!root) return;
+  root.classList.add('kb-js');
+  // Hero 影片：桌機／平板才載入，並尊重「減少動態效果」設定
+  var v=root.querySelector('.kb-hero__video');
+  if(v&&window.matchMedia&&window.matchMedia('(min-width:641px)').matches&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var tryPlay=function(){ var pl=v.play(); if(pl&&pl.catch){ pl.catch(function(){}); } };
+    v.addEventListener('playing',function(){ v.classList.add('is-playing'); });
+    v.addEventListener('canplay',tryPlay);
+    v.src=v.dataset.src;
+    v.load(); tryPlay();
+  }
+
+  var draw=root.querySelector('.kb-route__draw');
+  if(draw&&draw.getTotalLength){ draw.style.setProperty('--len',Math.ceil(draw.getTotalLength())); }
+  var items=root.querySelectorAll('.kb-rv');
+  if(!('IntersectionObserver' in window)){ items.forEach(function(el){el.classList.add('is-in')}); return; }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
+  },{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+  items.forEach(function(el,i){ el.style.transitionDelay=(i%3)*90+'ms'; io.observe(el); });
+})();
+</script>
