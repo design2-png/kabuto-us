@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kabuto™ 美國現貨直送</title>
-<meta name="description" content="Kabuto 人體工學椅，台灣下單、美西倉直出，3–7 天免運宅配到府。">
 <style>body{margin:0}</style>
 </head>
 <body>
 <!--
-  Kabuto™ 美國現貨直送｜一頁式銷售頁 v2.3
+  Kabuto™ 美國現貨直送｜一頁式銷售頁 v2.4
   - 所有樣式皆限定在 .kb-us 內，貼進 Cyberbiz 自訂 HTML 區塊不會影響佈景主題
   - 圖片：上傳 kabuto-hero.jpg / kabuto-night.jpg 至 Cyberbiz 後，替換兩個 <img> 的 src
   - 影片：上傳 kabuto-hero.mp4，替換 <video> 的 data-src（首頁背景，自動靜音循環播放）
-  - 連結：搜尋 href="#buy" 替換成商品頁網址
+  - 「立即選購」會平滑捲動到 Cyberbiz 商品區塊；若區塊 id 變了，
+    請同時更新按鈕的 href 與 script 裡的 BUY_ID
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -227,7 +227,7 @@
           <h1 id="kb-hero-title"><em>距離很遠，</em><span>但給你的照顧很近</span></h1>
           <p class="kb-hero__sub"><i aria-hidden="true"></i>Kabuto™ 美國現貨直送</p>
           <div class="kb-hero__cta">
-            <a class="kb-btn kb-btn--solid" href="#buy">立即選購
+            <a class="kb-btn kb-btn--solid" href="#1790233176373_7" data-kb-buy>立即選購
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
             <a class="kb-btn kb-btn--ghost" href="#kb-flow">了解出貨流程</a>
           </div>
@@ -366,6 +366,28 @@
 (function(){
   var root=document.getElementById('kb-us'); if(!root) return;
   root.classList.add('kb-js');
+  /* ── 「立即選購」跳轉設定 ──────────────────────────────
+     BUY_ID：Cyberbiz 商品區塊（或其上方標題區塊）的 id，
+     在 Cyberbiz 後台換過區塊就要更新這裡，同時更新按鈕的 href。
+     找不到該 id 時，會自動改找頁面上第一個 .product_list 區塊。 */
+  var BUY_ID='1790233176373_7';
+  function buyTarget(){ return document.getElementById(BUY_ID)||document.querySelector('.product_list'); }
+  function stickyOffset(){
+    var off=0;
+    document.querySelectorAll('header,.header,nav').forEach(function(el){
+      var s=getComputedStyle(el), r=el.getBoundingClientRect();
+      if((s.position==='fixed'||s.position==='sticky')&&r.top<=1&&r.bottom>off) off=r.bottom;
+    });
+    return off;
+  }
+  root.querySelectorAll('[data-kb-buy]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var el=buyTarget(); if(!el) return;            // 找不到就讓瀏覽器照原本的 href 處理
+      e.preventDefault();
+      window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-stickyOffset()-20,behavior:'smooth'});
+    });
+  });
+
   // Hero 影片：桌機／平板才載入，並尊重「減少動態效果」設定
   var v=root.querySelector('.kb-hero__video');
   if(v&&window.matchMedia&&window.matchMedia('(min-width:641px)').matches&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
