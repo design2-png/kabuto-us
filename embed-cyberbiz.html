@@ -1,5 +1,5 @@
 <!--
-  Kabuto™ 美國現貨直送｜一頁式銷售頁 v2.7
+  Kabuto™ 美國現貨直送｜一頁式銷售頁 v3.3
   - 所有樣式皆限定在 .kb-us 內，貼進 Cyberbiz 自訂 HTML 區塊不會影響佈景主題
   - 圖片：上傳 kabuto-hero.jpg / kabuto-night.jpg 至 Cyberbiz 後，替換兩個 <img> 的 src
   - 影片：上傳 kabuto-hero.mp4，替換 <video> 的 data-src（首頁背景，自動靜音循環播放）
@@ -44,9 +44,12 @@
 /* 1. HERO (video background) ---------------------------- */
 .kb-hero{position:relative;min-height:min(86vh,800px);display:grid;align-items:center;background:#f6f6f5;overflow:hidden}
 /* 影片／主視覺靠右，左緣以遮罩淡出融入底色 */
-.kb-hero__img,.kb-hero__video{position:absolute;top:0;bottom:0;left:34%;width:66%;height:100%;object-fit:cover;object-position:52% 50%;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%);
-  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%)}
+.kb-hero__img,.kb-hero__video{position:absolute;top:0;bottom:0;left:34%;width:66%;height:100%;object-fit:cover;object-position:52% 50%}
+/* 影片不套遮罩（遮罩會讓每一幀都要重新合成），改用上層漸層色塊做左緣淡出 */
+.kb-hero__fade{position:absolute;top:0;bottom:0;left:33.6%;width:24%;pointer-events:none;opacity:0;transition:opacity .9s ease;
+  background:linear-gradient(90deg,#f6f6f5 0%,rgba(246,246,245,.88) 20%,rgba(246,246,245,.5) 48%,rgba(246,246,245,.12) 78%,rgba(246,246,245,0) 100%)}
+.kb-hero.is-video-on .kb-hero__fade{opacity:1}
+/* 靜態備援圖維持遮罩：圖片不會逐幀重繪，沒有效能成本 */
 .kb-hero__img{filter:brightness(1.05);
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.28) 16%,#000 52%);
   mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.28) 16%,#000 52%)}
@@ -57,6 +60,7 @@
   background:linear-gradient(90deg,rgba(246,246,245,.92) 0%,rgba(246,246,245,.6) 28%,rgba(246,246,245,.2) 42%,rgba(246,246,245,0) 56%)}
 .kb-hero__inner{position:relative;z-index:1;width:100%;padding:80px 0 148px}
 .kb-hero__copy{max-width:640px}
+.kb-hero__logo{display:block;height:clamp(52px,5vw,64px);width:auto;fill:var(--ink);margin-bottom:22px}
 .kb-hero h1{font-size:clamp(34px,4.2vw,60px);font-weight:900;line-height:1.28;letter-spacing:.03em;margin:24px 0 20px}
 .kb-hero h1 em,.kb-hero h1 span{display:block;white-space:nowrap}
 .kb-hero h1 em{font-style:normal}
@@ -70,6 +74,7 @@
   border-top:1px solid var(--line);background:rgba(243,241,237,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .kb-ticker__track{display:flex;width:max-content;animation:kb-marquee 40s linear infinite}
 .kb-ticker__group{display:flex;align-items:center;flex:none}
+.kb-ticker__group span.is-tc{font-family:var(--sans);letter-spacing:.14em;text-transform:none;font-size:14px}
 .kb-ticker__group span{display:flex;align-items:center;gap:34px;padding-right:34px;white-space:nowrap;
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
 .kb-ticker__group span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange);flex:none}
@@ -141,6 +146,16 @@
 .kb-step__tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .kb-step__tags span{font-size:13px;padding:3px 12px;border:1px solid var(--line);border-radius:99px;color:var(--ink-2)}
 
+/* 5. BULK（大量採購） ----------------------------------- */
+.kb-bulk{background:#000;color:#fff;padding:clamp(56px,7vw,96px) 0}
+.kb-bulk__inner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(32px,5vw,72px);align-items:center}
+.kb-bulk .kb-eyebrow{color:rgba(255,255,255,.45)}
+.kb-bulk h2{font-size:clamp(26px,3.2vw,40px);font-weight:700;line-height:1.3;letter-spacing:.02em;margin:16px 0 16px}
+.kb-bulk p{font-size:clamp(15px,1.3vw,17px);color:rgba(255,255,255,.65);max-width:34em}
+.kb-bulk__cta{display:flex;justify-content:flex-end}
+.kb-us .kb-bulk .kb-btn--solid{background:var(--orange);color:#fff}
+.kb-us .kb-bulk .kb-btn--solid:hover{background:#fff;color:var(--ink)}
+
 /* 6. SERVICE -------------------------------------------- */
 .kb-care{padding:var(--sec) 0;background:var(--paper)}
 .kb-care__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,96px);align-items:center}
@@ -178,7 +193,7 @@
   .kb-hero{min-height:0;display:flex;flex-direction:column}
   .kb-hero::after{display:none}
   .kb-hero__img{position:relative;left:auto;width:100%;height:auto;aspect-ratio:4/3;object-position:60% 50%;-webkit-mask-image:none;mask-image:none}
-  .kb-hero__video{display:none}
+  .kb-hero__video,.kb-hero__fade{display:none}
   .kb-hero::after{display:none}
   .kb-hero__inner{order:-1;padding-top:48px;padding-bottom:36px}
   .kb-hero h1 em,.kb-hero h1 span{white-space:normal}
@@ -186,6 +201,10 @@
   .kb-hero__inner{padding-bottom:36px}
   .kb-ticker{position:relative;left:auto;right:auto;width:100%;height:56px}
   .kb-ticker__group span{font-size:11px;gap:24px;padding-right:24px}
+  .kb-ticker__group span.is-tc{font-size:12px}
+  .kb-bulk__inner{grid-template-columns:1fr;gap:28px}
+  .kb-bulk__cta{justify-content:stretch}
+  .kb-bulk__cta .kb-btn{width:100%;justify-content:center}
   .kb-pain-sec__img{aspect-ratio:4/3;object-position:74% 50%}
   .kb-compare>div+div{padding-left:18px}
   .kb-usmap svg{height:auto;width:100%}
@@ -211,24 +230,43 @@
   <section class="kb-hero" aria-labelledby="kb-hero-title">
     <img class="kb-hero__img" src="https://cdn.jsdelivr.net/gh/design2-png/kabuto-us@main/assets/kabuto-hero.jpg" alt="Kabuto 人體工學椅，黑色網背、可調頭枕與鋁合金椅腳" width="2400" height="1350" fetchpriority="high">
     <video class="kb-hero__video" data-src="https://cdn.jsdelivr.net/gh/design2-png/kabuto-us@main/assets/kabuto-hero.mp4" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="kb-hero__fade" aria-hidden="true"></div>
     <div class="kb-hero__inner">
       <div class="kb-wrap">
         <div class="kb-hero__copy">
+          <svg class="kb-hero__logo" viewBox="0 0 141.73 151.37" role="img" aria-label="Backbone 十週年">
+      <path d="M.75,44.06C39.2,46.75,47.5,18.48,46.79,1.51c-.02-.42-.31-.79-.75-.79h-17.3c-.58,0-.75.54-.75.79,0,7.12-.97,22.46-27.3,21.04h0C.37,22.53,0,22.93,0,23.31v19.96c0,.5.41.77.75.79Z"/>
+      <path d="M53.66,116.42c.79,0,1.43-.64,1.43-1.43v-15.32c0-.79-.64-1.43-1.43-1.43h-15.1v-48.15c0-.79-.64-1.43-1.43-1.43h-19.17c-.79,0-1.43.64-1.43,1.43v48.15H1.43c-.79,0-1.43.64-1.43,1.43v15.32c0,.79.64,1.43,1.43,1.43h52.23Z"/>
+      <path d="M94.74,120.99c19.86,0,35.95-16.1,35.95-35.95v-49.09C130.69,16.1,114.59,0,94.74,0s-35.95,16.1-35.95,35.95v49.09c0,19.86,16.1,35.95,35.95,35.95ZM111.41,86.9c0,9.33-7.57,16.9-16.9,16.9-5.41,0-10.22-2.55-13.31-6.51l30.21-46.91v36.52ZM77.6,35.94c0-9.33,7.57-16.9,16.9-16.9,4.15,0,7.95,1.5,10.89,3.99l-27.79,43.16v-30.25Z"/>
+      <path d="M141.15,1.07c-.47-.53-1.11-.69-1.69-.69s-1.23.16-1.7.68c-.16.18-.28.38-.37.58-.09-.2-.21-.4-.37-.58-.47-.52-1.11-.68-1.7-.68-.54,0-1.11.15-1.56.57-.06-.05-.12-.1-.19-.14-.47-.3-1.04-.37-1.54-.37h-4.02c-.47,0-.99.07-1.45.32l-.09.05c-.55.35-.85.92-.85,1.56s.3,1.2.84,1.55h.01c.39.26.84.35,1.27.38v3.52c0,.57.13,1.2.58,1.7.47.52,1.11.69,1.69.69s1.22-.17,1.7-.69c.45-.49.58-1.13.58-1.7v-3.51c.24,0,.5-.03.76-.11v3.62c0,.57.12,1.2.58,1.7.47.52,1.11.69,1.69.69s1.22-.17,1.7-.69c.16-.17.28-.37.37-.58.09.21.21.41.37.58.47.52,1.11.69,1.7.69s1.22-.17,1.69-.69c.45-.5.58-1.13.58-1.7V2.77c0-.57-.13-1.21-.58-1.7Z"/>
+      <path d="M127.75,142.9h-.41l-2.55-9.1h-4.14l3.66,12.29h2.73l-.09.39c-.08.36-.19.65-.34.84-.15.21-.35.36-.59.45-.24.09-.54.14-.89.14h-2.89v3.46h2.43c1.2,0,2.17-.13,2.91-.39.76-.24,1.35-.67,1.78-1.27.44-.59.78-1.4,1.02-2.43l3.3-13.47h-3.91l-2.03,9.1Z"/>
+      <path d="M116.93,135.12c-.61.83-.95,1.95-1.05,3.31v-4.63h-3.28v12.56h4.14v-6.28c0-.94.25-1.66.75-2.16.52-.5,1.24-.75,2.16-.75h.96v-3.55h-.5c-1.38,0-2.44.5-3.19,1.5Z"/>
+      <path d="M107.5,134.14c-.9-.38-1.99-.57-3.28-.57-.45,0-.96,0-1.5.02-.53.01-1.05.04-1.55.07-.5.03-.93.06-1.3.09v3.46c.52-.03,1.08-.06,1.71-.09.62-.03,1.21-.05,1.78-.07.56-.02.99-.02,1.27-.02.61,0,1.04.14,1.3.43.27.27.4.68.41,1.23h-1.98c-1.14,0-2.15.14-3.03.41-.88.27-1.57.71-2.07,1.3-.5.58-.75,1.33-.75,2.28,0,.83.19,1.55.57,2.16.39.59.93,1.05,1.62,1.37.68.32,1.46.48,2.34.48s1.62-.16,2.21-.48c.61-.32,1.08-.77,1.41-1.37.15-.26.26-.56.36-.87v2.4h3.28v-7.62c0-1.17-.24-2.13-.73-2.89-.47-.76-1.16-1.33-2.07-1.71ZM106.34,141.72c-.03.56-.14,1-.32,1.32-.18.32-.42.55-.71.68-.27.12-.59.18-.96.18-.56,0-.99-.14-1.3-.41-.3-.29-.46-.66-.46-1.11s.15-.84.46-1.12c.3-.29.74-.43,1.3-.43h1.98v.89Z"/>
+      <path d="M96.5,139.79c-.86-.73-2.1-1.18-3.71-1.34l-.86-.09c-.62-.08-1.08-.19-1.37-.34-.27-.15-.41-.39-.41-.71s.14-.54.43-.71c.3-.17.69-.25,1.16-.25.65,0,1.15.14,1.5.41.35.26.55.58.61.96h3.64c-.06-1.38-.61-2.43-1.64-3.16-1.03-.74-2.39-1.12-4.07-1.12-1.03,0-1.95.15-2.75.46-.8.3-1.43.76-1.89,1.37-.46.59-.68,1.35-.68,2.28,0,1.08.38,1.97,1.14,2.69.76.71,1.94,1.15,3.55,1.32l.87.09c.8.08,1.36.22,1.66.43.3.2.46.45.46.77,0,.36-.2.63-.59.8-.38.15-.83.23-1.37.23-.74,0-1.32-.14-1.73-.41-.41-.27-.64-.6-.71-.98h-3.64c.08,1.36.64,2.43,1.68,3.19,1.05.74,2.48,1.11,4.3,1.11,1.18,0,2.2-.17,3.05-.5.86-.33,1.52-.81,1.98-1.43.47-.62.71-1.37.71-2.23,0-1.17-.44-2.11-1.32-2.82Z"/>
+      <path d="M82.23,135.12c-.61.83-.95,1.95-1.05,3.31v-4.63h-3.28v12.56h4.14v-6.28c0-.94.25-1.66.75-2.16.52-.5,1.24-.75,2.16-.75h.96v-3.55h-.5c-1.38,0-2.44.5-3.19,1.5Z"/>
+      <path d="M73.27,134.26c-.94-.61-2.09-.91-3.44-.91-1.02,0-1.93.18-2.73.55-.8.35-1.49.83-2.05,1.43-.55.61-.97,1.3-1.27,2.09-.29.77-.43,1.59-.43,2.43v.46c0,.82.14,1.62.43,2.39.3.77.74,1.47,1.3,2.09.56.62,1.25,1.12,2.07,1.48.82.36,1.76.55,2.82.55s2.02-.19,2.84-.57c.83-.38,1.52-.9,2.05-1.57.55-.67.91-1.43,1.09-2.28h-3.78c-.15.33-.42.6-.8.8-.36.2-.83.3-1.41.3-.65,0-1.18-.14-1.59-.41-.41-.27-.71-.66-.91-1.16-.08-.22-.14-.46-.19-.71h8.9v-1.32c0-1.17-.25-2.25-.75-3.23-.5-1-1.22-1.81-2.16-2.41ZM67.26,138.99c.05-.29.12-.56.22-.8.21-.52.52-.89.91-1.14.41-.26.89-.39,1.43-.39s1.02.13,1.39.39c.38.26.66.64.84,1.14.1.24.17.5.22.8h-5.01Z"/>
+      <polygon points="56.9 142.9 56.4 142.9 53.98 133.8 49.74 133.8 53.34 146.36 54.66 146.36 56.12 146.36 57.32 146.36 58.69 146.36 59.82 146.36 62.92 133.8 58.96 133.8 56.9 142.9"/>
+      <polygon points="42.65 133.8 42.65 136.81 44.24 136.81 44.24 146.36 48.38 146.36 48.38 136.81 48.38 133.8 44.24 133.8 42.65 133.8"/>
+      <path d="M44.26,129.25c-.35.38-.52.87-.52,1.48s.17,1.11.52,1.5c.36.38.93.57,1.68.57s1.29-.19,1.64-.57c.35-.39.52-.89.52-1.5s-.17-1.1-.52-1.48c-.35-.39-.9-.59-1.66-.59s-1.3.2-1.66.59Z"/>
+      <path d="M36.84,133.39h-.18c-.94,0-1.74.21-2.41.64-.65.43-1.15,1.07-1.48,1.93-.14.35-.24.74-.32,1.17v-3.33h-3.28v12.56h4.14v-7.26c0-.61.17-1.09.52-1.46.36-.38.84-.57,1.43-.57s1.05.19,1.39.57c.35.36.52.83.52,1.41v7.3h4.14v-7.19c0-1.96-.39-3.41-1.18-4.35-.77-.96-1.87-1.43-3.3-1.43Z"/>
+      <path d="M22.36,133.39h-.18c-.94,0-1.74.21-2.41.64-.65.43-1.15,1.07-1.48,1.93-.14.35-.24.74-.32,1.17v-3.33h-3.28v12.56h4.14v-7.26c0-.61.17-1.09.52-1.46.36-.38.84-.57,1.43-.57s1.05.19,1.39.57c.35.36.52.83.52,1.41v7.3h4.14v-7.19c0-1.96-.39-3.41-1.18-4.35-.77-.96-1.87-1.43-3.3-1.43Z"/>
+      <path d="M9.58,134.14c-.9-.38-1.99-.57-3.28-.57-.46,0-.96,0-1.5.02-.53.01-1.05.04-1.55.07-.5.03-.93.06-1.3.09v3.46c.52-.03,1.08-.06,1.71-.09.62-.03,1.21-.05,1.77-.07.56-.02.99-.02,1.27-.02.61,0,1.04.14,1.3.43.27.27.4.68.41,1.23h-1.98c-1.14,0-2.15.14-3.03.41-.88.27-1.57.71-2.07,1.3-.5.58-.75,1.33-.75,2.28,0,.83.19,1.55.57,2.16.39.59.93,1.05,1.62,1.37.68.32,1.46.48,2.34.48s1.62-.16,2.21-.48c.61-.32,1.08-.77,1.41-1.37.15-.26.26-.56.36-.87v2.4h3.28v-7.62c0-1.17-.24-2.13-.73-2.89-.47-.76-1.16-1.33-2.07-1.71ZM8.42,141.72c-.03.56-.14,1-.32,1.32-.18.32-.42.55-.71.68-.27.12-.59.18-.96.18-.56,0-.99-.14-1.3-.41-.3-.29-.46-.66-.46-1.11s.15-.84.46-1.12c.3-.29.74-.43,1.3-.43h1.98v.89Z"/>
+    </svg>
           <p class="kb-eyebrow">Ships from US West</p>
           <h1 id="kb-hero-title"><em>距離很遠，</em><span>但給你的照顧很近</span></h1>
-          <p class="kb-hero__sub"><i aria-hidden="true"></i>Kabuto™ 美國現貨直送</p>
+          <p class="kb-hero__sub"><i aria-hidden="true"></i>美國現貨直送，免運到府</p>
           <div class="kb-hero__cta">
             <a class="kb-btn kb-btn--solid" href="#1790233176373_7" data-kb-buy>立即選購
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
-            <a class="kb-btn kb-btn--ghost" href="#kb-flow">了解出貨流程</a>
+            <a class="kb-btn kb-btn--ghost" href="#kb-bulk">大量採購</a>
           </div>
         </div>
       </div>
     </div>
     <div class="kb-ticker" aria-hidden="true">
       <div class="kb-ticker__track">
-        <div class="kb-ticker__group"><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span></div>
-        <div class="kb-ticker__group"><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span><span>Direct shipping from US stock</span></div>
+        <div class="kb-ticker__group"><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span></div>
+        <div class="kb-ticker__group"><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span><span class="is-tc">美國現貨・免運直送</span><span>US Stock · Free Shipping</span></div>
       </div>
     </div>
   </section>
@@ -273,7 +311,7 @@
         <h2 class="kb-h2" id="kb-action-title">告別跨海漫長等待，<br>我們把現貨直接搬進美國</h2>
         <div class="kb-lead">
           <p>不必忍受動輒數週的海運，更不必到處拜託代購。</p>
-          <p>Kabuto 正式啟動美國在地倉儲計畫——<strong>現貨全數進駐美西倉</strong>。</p>
+          <p>Backbone 正式啟動美國在地倉儲計畫——<strong>美西現貨直送，免運到府</strong>。</p>
         </div>
         <div class="kb-compare">
           <div class="is-old"><small>BEFORE</small><b>數週</b><p>跨海運送、清關等待</p></div>
@@ -325,6 +363,22 @@
           <div class="kb-step__tags"><span>包裹追蹤碼</span><span>免運</span></div>
         </li>
       </ol>
+    </div>
+  </section>
+
+
+  <!-- 5. BULK -->
+  <section class="kb-bulk" id="kb-bulk" aria-labelledby="kb-bulk-title">
+    <div class="kb-wrap kb-bulk__inner kb-rv">
+      <div>
+        <p class="kb-eyebrow">For Teams &amp; Offices</p>
+        <h2 id="kb-bulk-title">美國大量採購服務</h2>
+        <p>無論是新辦公室設備添購、團隊設備升級或企業大量採購需求，歡迎填寫表單，與我們聯繫洽詢。</p>
+      </div>
+      <div class="kb-bulk__cta">
+        <a class="kb-btn kb-btn--solid" href="https://forms.gle/MMTF4QqYMZHMNo7Y6" target="_blank" rel="noopener noreferrer">填寫詢價表單
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div>
     </div>
   </section>
 
@@ -383,7 +437,7 @@
   var v=root.querySelector('.kb-hero__video');
   if(v&&window.matchMedia&&window.matchMedia('(min-width:641px)').matches&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     var tryPlay=function(){ var pl=v.play(); if(pl&&pl.catch){ pl.catch(function(){}); } };
-    v.addEventListener('playing',function(){ v.classList.add('is-playing'); });
+    v.addEventListener('playing',function(){ v.classList.add('is-playing'); v.parentNode.classList.add('is-video-on'); });
     v.addEventListener('canplay',tryPlay);
     v.src=v.dataset.src;
     v.load(); tryPlay();
